@@ -116,25 +116,19 @@ def handle_message(event: MessageEvent):
         if text == "はい":
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("では学内案内アプリの勉強を行います。")
+                TextSendMessage("あなたはKotlinについて学習した経験はありますか？")
             )
             Mysession.update_context(user_id, "3")
         else:
             Mysession.update_context(user_id, "0")
 
     elif Mysession.read_context(user_id) == "3":
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage("あなたはKotlinについて学習した経験はありますか？")
-        )
-        Mysession.update_context(user_id,"4")
-
-    elif Mysession.read_context(user_id) == "4":
         if text == "はい":
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("画面遷移の勉強から始めてもらいます。"),
+                [TextSendMessage("画面遷移の勉強から始めてもらいます。"),TextSendMessage("https://qiita.com/naoi/items/8384561d30111c8704b3"),TextSendMessage("https://developer.android.com/codelabs/android-navigation?hl=ja#0")],
             )
+
             Mysession.update_context(user_id, "0")
         else:
             line_bot_api.reply_message(
