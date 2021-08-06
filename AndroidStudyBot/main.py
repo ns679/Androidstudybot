@@ -116,13 +116,13 @@ def handle_message(event: MessageEvent):
         if text == "はい":
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("あなたはKotlinについて学習した経験はありますか？")
+                TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nあなたはKotlinについて学習した経験はありますか？")
             )
             Mysession.update_context(user_id, "3")
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("どういったアプリを作成したいですか？")
+                [TextSendMessage("もう一度入力してください。"),TextSendMessage("どういったアプリを作成したいですか？")]
             )
             Mysession.update_context(user_id, "1")
 
