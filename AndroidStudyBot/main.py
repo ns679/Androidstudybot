@@ -120,22 +120,42 @@ def handle_message(event: MessageEvent):
             )
             Mysession.update_context(user_id, "3")
         else:
-            Mysession.update_context(user_id, "0")
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("どういったアプリを作成したいですか？")
+            )
+            Mysession.update_context(user_id, "1")
 
     elif Mysession.read_context(user_id) == "3":
         if text == "はい":
             line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage("画面遷移の勉強から始めてもらいます。"),TextSendMessage("https://qiita.com/naoi/items/8384561d30111c8704b3"),TextSendMessage("https://developer.android.com/codelabs/android-navigation?hl=ja#0")],
+                TextSendMessage("画面遷移の勉強から始めてもらいます。\n画面遷移と入力してください。")
             )
 
-            Mysession.update_context(user_id, "0")
+            Mysession.update_context(user_id, "5")
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("Kotlinの基礎の勉強から始めてもらいます。"),
+                TextSendMessage("Kotlinの基礎の勉強から始めてもらいます。\nKotlin基礎と入力してください。\nKotlin基礎が終わったら画面遷移と入力してください。")
             )
-            Mysession.update_context(user_id, "0")
+            Mysession.update_context(user_id, "4")
+
+    elif Mysession.read_context(user_id) == "4":
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("https://sukkiri.jp/technologies/ides/intellij-idea/intellij-idea-win.html"),TextSendMessage("https://developer.android.com/studio/install?hl=ja"),
+             TextSendMessage("https://qiita.com/SYABU555/items/25b1e81a2437d6a2559f"),TextSendMessage("https://www.programming-fun.net/article/article_133.html\n1~5,11~14の単元を勉強"),
+             TextSendMessage("https://qiita.com/k-ysd/items/4efdecdfd60afe333a3a\n前編～中編まで勉強")]
+        )
+        Mysession.update_context(user_id, "5")
+
+    elif Mysession.read_context(user_id) == "5":
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("https://qiita.com/naoi/items/8384561d30111c8704b3"),TextSendMessage("https://developer.android.com/codelabs/android-navigation?hl=ja#0")]
+        )
+        Mysession.update_context(user_id, "0")
     # line_bot_api.reply_message(
     #     event.reply_token,
     #     TextSendMessage(text=event.message.text))

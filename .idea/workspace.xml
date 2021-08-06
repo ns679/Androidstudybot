@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97356ae7-ed21-438d-a43c-cadebbe806fe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AndroidStudyBot/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidStudyBot/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AndroidStudyBot/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="136" column="13" lean-forward="true" selection-start-line="136" selection-start-column="13" selection-end-line="136" selection-end-column="13" />
+            <state relative-caret-position="-28">
+              <caret line="139" column="108" selection-start-line="139" selection-start-column="108" selection-end-line="139" selection-end-column="108" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -169,8 +168,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AndroidStudyBot/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="136" column="13" lean-forward="true" selection-start-line="136" selection-start-column="13" selection-end-line="136" selection-end-column="13" />
+        <state relative-caret-position="-28">
+          <caret line="139" column="108" selection-start-line="139" selection-start-column="108" selection-end-line="139" selection-end-column="108" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
