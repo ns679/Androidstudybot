@@ -103,7 +103,7 @@ def handle_message(event: MessageEvent):
         if text == "基本":
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("では学内案内アプリを作成しますか？")
+                TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nでは学内案内アプリを作成しますか？")
             )
             Mysession.update_context(user_id,"2")
         else:
@@ -116,7 +116,7 @@ def handle_message(event: MessageEvent):
         if text == "はい":
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nあなたはKotlinについて学習した経験はありますか？")
+                TextSendMessage("あなたはKotlinについて学習した経験はありますか？")
             )
             Mysession.update_context(user_id, "3")
         else:
