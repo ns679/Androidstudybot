@@ -79,7 +79,9 @@ def handle_message(event: MessageEvent):
     if ((Mysession.read_context(user_id) == "1" or
          Mysession.read_context(user_id) == "2" or
          Mysession.read_context(user_id) == "3" or
-         Mysession.read_context(user_id) == "4") and
+         Mysession.read_context(user_id) == "4" or
+         Mysession.read_context(user_id) == "5" or
+         Mysession.read_context(user_id) == "6") and
             text == "中止"):
             line_bot_api.reply_message(
                 event.reply_token,
@@ -87,7 +89,7 @@ def handle_message(event: MessageEvent):
             )
         # 現在のstatusを消して新規statusで初期化。
             Mysession.reset(user_id)
-    if Mysession.read_context(user_id) == "0":
+    if Mysession.read_context(user_id) == "0": #「勉強」、「検索」の選択
         if text == "勉強":
             line_bot_api.reply_message(
                 event.reply_token,
@@ -99,20 +101,26 @@ def handle_message(event: MessageEvent):
                 event.reply_token,
                 TextSendMessage("勉強を行う場合は「勉強」と入力してください。")
             )
-    elif Mysession.read_context(user_id) == "1":
+    elif Mysession.read_context(user_id) == "1": #勉強で行うアプリの選択
         if text == "基本":
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nでは学内案内アプリを作成しますか？")
             )
             Mysession.update_context(user_id,"2")
+        # elif text == "応用":
+        #     line_bot_api.reply_message(
+        #         event.reply_token,
+        #         TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nではメモアプリを作成しますか?")
+        #     )
+        #     Mysession.update_context(user_id,"8")
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("簡単なアプリを作成したいのであれば「基本」と入力してください。")
+                TextSendMessage("簡単なアプリを作成したいのであれば「基本」\n難しいアプリを作成したいのであれば「応用」\nと入力してください。")
             )
 
-    elif Mysession.read_context(user_id) == "2":
+    elif Mysession.read_context(user_id) == "2": #学内案内アプリについての質問
         if text == "はい":
             line_bot_api.reply_message(
                 event.reply_token,
@@ -126,7 +134,7 @@ def handle_message(event: MessageEvent):
             )
             Mysession.update_context(user_id, "1")
 
-    elif Mysession.read_context(user_id) == "3":
+    elif Mysession.read_context(user_id) == "3": #質問結果による分岐
         if text == "はい":
             line_bot_api.reply_message(
                 event.reply_token,
@@ -141,7 +149,7 @@ def handle_message(event: MessageEvent):
             )
             Mysession.update_context(user_id, "4")
 
-    elif Mysession.read_context(user_id) == "4":
+    elif Mysession.read_context(user_id) == "4": #Kotlin基礎のサイト出力(学内案内アプリ)
         line_bot_api.reply_message(
             event.reply_token,
             [TextSendMessage("https://sukkiri.jp/technologies/ides/intellij-idea/intellij-idea-win.html"),TextSendMessage("https://developer.android.com/studio/install?hl=ja"),
@@ -150,12 +158,28 @@ def handle_message(event: MessageEvent):
         )
         Mysession.update_context(user_id, "5")
 
-    elif Mysession.read_context(user_id) == "5":
+    elif Mysession.read_context(user_id) == "5": #画面遷移のサイト出力(学内案内アプリ)
         line_bot_api.reply_message(
             event.reply_token,
-            [TextSendMessage("https://qiita.com/naoi/items/8384561d30111c8704b3"),TextSendMessage("https://developer.android.com/codelabs/android-navigation?hl=ja#0")]
+            [TextSendMessage("https://qiita.com/naoi/items/8384561d30111c8704b3"),TextSendMessage("https://developer.android.com/codelabs/android-navigation?hl=ja#0"),
+             TextSendMessage("理解できたと感じたら、テストを行うので\n「テスト」と入力してください。")]
         )
-        Mysession.update_context(user_id, "0")
+        Mysession.update_context(user_id, "6")
+    elif Mysession.read_context(user_id) == "6": #テストのURL出力
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("理解度テストを行います。\n下記のテストとアンケートを行ってください。"),TextSendMessage("テスト\nhttps://forms.gle/fqVhgFJaAhHimqtQ9"),
+             TextSendMessage("アンケート\nhttps://forms.gle/UoTNxxCP2bpa1a6ZA")]
+        )
+        Mysession.update_context(user_id,"7")
+    elif Mysession.read_context(user_id) == "7": #学内案内アプリの終了表示
+        if text == "Xtrfi8j":
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("学内案内アプリの勉強を終了します。\nお疲れ様でした。")
+            )
+            Mysession.reset(user_id)
+
     # line_bot_api.reply_message(
     #     event.reply_token,
     #     TextSendMessage(text=event.message.text))
