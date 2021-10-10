@@ -82,7 +82,12 @@ def handle_message(event: MessageEvent):
          Mysession.read_context(user_id) == "4" or
          Mysession.read_context(user_id) == "5" or
          Mysession.read_context(user_id) == "6" or
-         Mysession.read_context(user_id) == "7") and
+         Mysession.read_context(user_id) == "7" or
+         Mysession.read_context(user_id) == "9" or
+         Mysession.read_context(user_id) == "10"or
+         Mysession.read_context(user_id) == "11"or
+         Mysession.read_context(user_id) == "12"or
+         Mysession.read_context(user_id) == "17") and
             text == "中止"):
             line_bot_api.reply_message(
                 event.reply_token,
@@ -91,10 +96,11 @@ def handle_message(event: MessageEvent):
         # 現在のstatusを消して新規statusで初期化。
             Mysession.reset(user_id)
     if Mysession.read_context(user_id) == "0": #「勉強」、「検索」の選択
-        if text == "勉強":
+        if "勉強" in text or "開発" in text or "作成" in text:
             line_bot_api.reply_message(
                 event.reply_token,
-                [TextSendMessage("どういったアプリを作成したいですか？"),TextSendMessage("簡単なアプリを作成したいのであれば「基本」\nと入力してください。")]
+                [TextSendMessage("どういったアプリを作成したいですか？"),TextSendMessage("簡単なアプリを作成したいのであれば「基本」\n難しいアプリを作成したいのであれば「応用」 \nと入力してください。"),
+                 TextSendMessage("")]
             )
             Mysession.update_context(user_id, "1")
         else:
@@ -103,29 +109,59 @@ def handle_message(event: MessageEvent):
                 TextSendMessage("勉強を行う場合は「勉強」と入力してください。")
             )
     elif Mysession.read_context(user_id) == "1": #勉強で行うアプリの選択
-        if text == "基本":
+
+        if "基本" in text or "簡単" in text or "難しくない" in text:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nでは学内案内アプリを作成しますか？")
+                TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nでは基本コースにしますか？")
             )
             Mysession.update_context(user_id,"2")
-        # elif text == "応用":
-        #     line_bot_api.reply_message(
-        #         event.reply_token,
-        #         TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nではメモアプリを作成しますか?")
-        #     )
-        #     Mysession.update_context(user_id,"8")
+
+        elif "応用" in text or "難しい" in text:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("※ここからは「はい」か\n「いいえ」で答えてください。\nでは応用コースにしますか?")
+            )
+            Mysession.update_context(user_id,"9")
+
+        elif "詳細" in text or "説明" in text or "作れ" in text or "作成" in text or "どんな" in text or "どういった" in text:
+            line_bot_api.reply_message(
+                event.reply_token,
+                [TextSendMessage("基本コースは画面遷移を用いたアプリ開発\n応用コースは画面遷移に加えて\nローカルデータベース、非同期処理\nを用いたアプリ開発を行います。"),
+                 TextSendMessage("使用言語はKotlinです。\nJavaに似た言語です。")]
+            )
+
+        elif ("基本" in text and "どういった" in text) or ("基本" in text and "どんな" in text) or ("基本" in text and "詳細" in text):
+            line_bot_api.reply_message(
+                event.reply_token,
+                [TextSendMessage("基本コースは画面遷移を用いた\nアプリ開発を行います。"),
+                 TextSendMessage("使用言語はKotlinです。\nJavaに似た言語です。")]
+            )
+
+        elif ("応用" in text and "どういった" in text) or ("応用" in text and "どんな" in text) or ("応用" in text and "詳細" in text):
+            line_bot_api.reply_message(
+                event.reply_token,
+                [TextSendMessage("応用コースは画面遷移に加えて\nローカルデータベース、非同期処理\nを用いたアプリ開発を行います。"),
+                 TextSendMessage("使用言語はKotlinです。\nJavaに似た言語です。")]
+            )
+
+        elif "時間" in text or "勉強時間" in text or "どのくらい" in text:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("基本コースは5～10時間程度\n応用コースは10～15時間程度で\n作成できます。")
+            )
+
         else:
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("簡単なアプリを作成したいのであれば「基本」\nと入力してください。")
+                TextSendMessage("簡単なアプリを作成したいのであれば「基本」\n難しいアプリを作成したいのであれば「応用」\nと入力してください。")
             )
 
     elif Mysession.read_context(user_id) == "2": #学内案内アプリについての質問
         if text == "はい":
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage("あなたはKotlinについて学習した経験はありますか？")
+                [TextSendMessage("基本コースでは\n学内案内アプリを作成してもらいます。"),TextSendMessage("あなたはKotlinについて学習した経験はありますか？")]
             )
             Mysession.update_context(user_id, "3")
         else:
@@ -166,6 +202,7 @@ def handle_message(event: MessageEvent):
              TextSendMessage("理解できたと感じたら、アプリの実装を行うので\n「実装」と入力してください。")]
         )
         Mysession.update_context(user_id, "6")
+
     elif Mysession.read_context(user_id) == "6":
         line_bot_api.reply_message(
             event.reply_token,
@@ -173,6 +210,7 @@ def handle_message(event: MessageEvent):
              TextSendMessage("終了したらテストを行うので\n「テスト」と入力してください。")]
         )
         Mysession.update_context(user_id,"7")
+
     elif Mysession.read_context(user_id) == "7": #テストのURL出力
         line_bot_api.reply_message(
             event.reply_token,
@@ -180,6 +218,7 @@ def handle_message(event: MessageEvent):
              TextSendMessage("アンケート\nhttps://forms.gle/UoTNxxCP2bpa1a6ZA")]
         )
         Mysession.update_context(user_id,"8")
+
     elif Mysession.read_context(user_id) == "8": #学内案内アプリの終了表示
         if text == "Xtrfi8j":
             line_bot_api.reply_message(
@@ -187,6 +226,133 @@ def handle_message(event: MessageEvent):
                 TextSendMessage("学内案内アプリの勉強を終了します。\nお疲れ様でした。")
             )
             Mysession.reset(user_id)
+
+    elif Mysession.read_context(user_id) == "9": #メモアプリについての質問
+        if text == "はい":
+            line_bot_api.reply_message(
+                event.reply_token,
+                [TextSendMessage("応用コースでは\nメモアプリを作成してもらいます。"),TextSendMessage("あなたはKotlinについて学習した経験はありますか？")]
+            )
+            Mysession.update_context(user_id, "10")
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                [TextSendMessage("もう一度入力してください。"),TextSendMessage("どういったアプリを作成したいですか？")]
+            )
+            Mysession.update_context(user_id, "1")
+
+    elif Mysession.read_context(user_id) == "10": #質問結果による分岐(メモ１）
+        if text == "はい":
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("あなたは画面遷移について学習した経験はありますか？")
+            )
+
+            Mysession.update_context(user_id, "11")
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("Kotlinの基礎の勉強から始めてもらいます。\nKotlin基礎と入力してください。\nKotlin基礎が終わったら画面遷移と入力してください。")
+            )
+            Mysession.update_context(user_id, "13")
+
+    elif Mysession.read_context(user_id) == "11":#質問結果による分岐（メモ２）
+        if text == "はい":
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("あなたはローカルデータベースを構築した経験はありますか？")
+            )
+            Mysession.update_context(user_id,"12")
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("画面遷移の勉強から始めてもらいます。\n画面遷移と入力してください。")
+            )
+            Mysession.update_context(user_id,"14")
+
+    elif Mysession.read_context(user_id)=="12":#質問結果による分岐（メモ３）
+        if text == "はい":
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("非同期処理から勉強してもらいます。\n非同期処理と入力してください。")
+            )
+            Mysession.update_context(user_id,"16")
+        else:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("ローカルデータベース構築から勉強してもらいます。\nローカルデータベースと入力してください。")
+            )
+            Mysession.update_context(user_id,"15")
+
+    elif Mysession.read_context(user_id)=="13":#メモアプリ版Kotlin基礎
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("https://sukkiri.jp/technologies/ides/intellij-idea/intellij-idea-win.html"),
+             TextSendMessage("https://developer.android.com/studio/install?hl=ja"),
+             TextSendMessage("https://qiita.com/SYABU555/items/25b1e81a2437d6a2559f"),
+             TextSendMessage("https://www.programming-fun.net/article/article_133.html\n1~5,11~14の単元を勉強"),
+             TextSendMessage("https://qiita.com/k-ysd/items/4efdecdfd60afe333a3a\n前編～中編まで勉強")]
+        )
+        Mysession.update_context(user_id,"14")
+
+    elif Mysession.read_context(user_id) == "14":#メモアプリ版画面遷移
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("https://qiita.com/naoi/items/8384561d30111c8704b3"),
+             TextSendMessage("https://developer.android.com/codelabs/android-navigation?hl=ja#0"),
+             TextSendMessage("画面遷移が終わったら\nローカルデータベースと入力してください。")]
+        )
+        Mysession.update_context(user_id, "15")
+
+    elif Mysession.read_context(user_id) == "15":#ローカルデータベース勉強サイト提供
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("https://qiita.com/yukiyamadajp/items/73bffb6a3697cb62f9e1"),
+             TextSendMessage("https://qiita.com/iTakahiro/items/7e0d63140ae4dac10d18"),
+             TextSendMessage("https://developer.android.com/training/data-storage/room?hl=ja"),
+             TextSendMessage("ローカルデータベースが終わったら\n非同期処理と入力してください。")]
+        )
+        Mysession.update_context(user_id,"16")
+
+    elif Mysession.read_context(user_id) == "16":#非同期処理
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("https://qiita.com/takahirom/items/3e0b7009d2e050e0e56c"),
+             TextSendMessage("https://developer.android.com/kotlin/coroutines?hl=ja"),
+             TextSendMessage("以上のサイトを用いて\nある程度知識が身に付いたら\n実装を行うので「実装」と入力してください。")]
+        )
+        Mysession.update_context(user_id,"17")
+
+    elif Mysession.read_context(user_id) == "17":#メモアプリ実装
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("アプリの実装を行います。\n以下のリンクをクリックして実装を行ってください。"),
+             TextSendMessage("https://docs.google.com/presentation/d/1sC864a8PE51P_Vj7tfBwYITCXCORfHxXHR8yI5YdUY0/edit?usp=sharing"),
+             TextSendMessage("https://docs.google.com/presentation/d/1MJz5t8Ti6bjsm_H0Ukud0DzXGOW8xws8smGYdWhve7w/edit?usp=sharing"),
+             TextSendMessage("終了したらテストを行うので\n「テスト」と入力してください。")]
+        )
+        Mysession.update_context(user_id,"18")
+
+    elif Mysession.read_context(user_id) == "18":
+        line_bot_api.reply_message(
+            event.reply_token,
+            [TextSendMessage("理解度テストを行います。\n下記のテストとアンケートを行ってください。"),
+             TextSendMessage("https://forms.gle/VPC96fYoeLBYETKx7"),
+             TextSendMessage("https://forms.gle/23zfj2dGVHJiStJ4A")]
+        )
+        Mysession.update_context(user_id,"19")
+
+    elif Mysession.read_context(user_id) == "19":
+        if text == "Rkgijf03jt":
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage("学内案内アプリの勉強を終了します。\nお疲れ様でした。")
+            )
+        Mysession.reset(user_id)
+
+
+
+
 
     # line_bot_api.reply_message(
     #     event.reply_token,
