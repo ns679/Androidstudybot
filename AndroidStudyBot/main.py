@@ -100,7 +100,7 @@ def handle_message(event: MessageEvent):
             line_bot_api.reply_message(
                 event.reply_token,
                 [TextSendMessage("どういったアプリを作成したいですか？"),TextSendMessage("簡単なアプリを作成したいのであれば「基本」\n難しいアプリを作成したいのであれば「応用」 \nと入力してください。"),
-                 TextSendMessage("")]
+                 TextSendMessage("各コースの質問についても答えます。\n例：製作時間どのくらいかかるか、どういったアプリを作成するのか等")]
             )
             Mysession.update_context(user_id, "1")
         else:
